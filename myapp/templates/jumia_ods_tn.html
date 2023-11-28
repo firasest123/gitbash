@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'navigation.html' %}
+    {% if user.is_authenticated %}
+
+         <div class="content-container">
+            <div class="logo-container">
+                <h1 class="logo-text">Jumia ODS Tn</h1>
+            </div>
+			{% if user.name not in 'Nacer Haj,Wassim Selmi,Arbia Ghoufa,Oussama Younsi,Mariem Baccouche,Ghada Mohamed' %}
+            <form class="search-form">
+        <input class="search-input" type="search" id="case-number" placeholder="Recherche par numéro de statut">
+        <div id="suggestions-container" class="suggestions-container"></div>
+    </form>
+    <div id="case-name" class="case-name"></div>
+
+
+            <div>
+                <a href="{% url 'case_list' 'OU EST MA COMMANDE' %}" class="triangle-button blue-border">
+                    <div class="triangle-text">Où est ma commande</div>
+                </a>
+                <a href="{% url 'case_list' 'Commande en retard' %}" class="triangle-button red-border">
+                    <div class="triangle-text">Commande en retard</div>
+                </a>
+                <a href="{% url 'commande_annulee' %}" class="triangle-button green-border">
+                    <div class="triangle-text">Annulation d'une commande</div>
+                </a>
+                <a href="{% url 'case_list' 'Confirmation'%}" class="triangle-button white-border">
+                    <div class="triangle-text">Confirmation</div>
+                </a>
+            </div>
+{% endif %}
+        </div>
+
+    {% endif %}
+
+<style>
+ @import url('https://fonts.googleapis.com/css2?family=Charm&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Montserrat:wght@300&display=swap');
+
+
+
+ .triangle-button {
+     display: inline-block;
+     position: relative;
+     width: 0;
+     height: 0;
+     border-left: 50px solid transparent;
+     border-right: 50px solid transparent;
+     margin: 8px;
+     margin-right: 40px;
+     bottom:50px;
+}
+ .blue-border {
+     border-bottom: 75px solid rgb(0, 63, 119);
+}
+ .red-border {
+     border-bottom: 75px solid rgb(0, 84, 150);
+}
+ .green-border {
+     border-bottom: 75px solid rgb(0, 122, 156);
+}
+.white-border {
+     border-bottom: 75px solid rgb(45, 175, 230);
+}
+
+/* Center the search bar and buttons */
+ .content-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+}
+ .search-form {
+     display: flex;
+     align-items: center;
+     margin-bottom: 60px;
+     position:relative;
+     bottom:50px;
+}
+ .search-input {
+     width: 500px;
+    /* Adjust the width as needed */
+     padding: 10px;
+     font-size: 18px;
+     border-radius: 20px;
+    /* Rounded corners */
+     border: 2px solid #ccc;
+    /* Border color */
+     transition: border-color 0.3s, background-color 0.3s;
+    /* Transition effects */
+}
+
+ .search-input:hover {
+     border-color: #007bff;
+     background-color: #f8f9fa;
+}
+
+
+ .triangle-text {
+     position: absolute;
+     top: 90px;
+    /* Adjust the distance from the triangle */
+     left: 50%;
+     transform: translateX(-50%);
+     text-align: center;
+     font-size: 14px;
+     text-decoration: none;
+     color: white;
+     max-height: 50px;
+     overflow: hidden;
+     line-height: 1.2;
+     font-family: "Poppins", sans-serif;
+}
+
+ .logo-container {
+     margin:30px;
+}
+
+ .logo-text {
+     align-items: center;
+     justify-content: center;
+     color: white;
+     font-size:70px;
+     margin-bottom:80px;
+     padding:0;
+    font-family: 'Dela Gothic One', cursive;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+ .suggestions-container {
+     position: absolute;
+     width: 500px;
+     background-color: rgba(255, 255, 255, 0.5);
+     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+     border-radius: 8px;
+     max-height: 200px;
+     overflow-y: auto;
+     z-index: 1;
+     top: 50%;
+     align-items: center;
+     margin-top: 25px;
+     border-radius:1em;
+}
+
+
+ .suggestion {
+     padding: 8px 12px;
+     cursor: pointer;
+     transition: background-color 0.2s;
+     border-bottom: 1px solid #ddd;
+}
+
+
+ .suggestion:last-child {
+     border-bottom: none;
+}
+
+
+ .suggestion:hover {
+     background-color: #f2f2f2;
+}
+
+
+ .case-name {
+     margin-top: 5px;
+     font-weight: bold;
+     }
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+
+ .content-container {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-direction: column;
+}
+
+
+ .logo-container {
+     margin-bottom:30px;
+}
+
+ .logo-text {
+     align-items: center;
+     justify-content: center;
+     font-size: 50px;
+     position: relative;
+     right:30px;
+}
+
+
+ .search-input {
+     width: 350px;
+     padding: 10px;
+     font-size: 18px;
+     border-radius: 20px;
+     border: 2px solid #ccc;
+     transition: border-color 0.3s, background-color 0.3s;
+
+}
+
+.suggestions-container {
+     position: absolute;
+     width: 350px;
+     background-color: rgba(255, 255, 255, 0.5);
+     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+     border-radius: 8px;
+     max-height: 200px;
+     overflow-y: auto;
+     z-index: 1;
+     top: 50%;
+     align-items: center;
+     margin-top: 25px;
+     border-radius:1em;
+}
+
+.triangle-button {
+     display: inline-block;
+     position: relative;
+     width: 0;
+     height: 0;
+     border-left: 50px solid transparent;
+     border-right: 50px solid transparent;
+     margin: 8px;
+     bottom:50px;
+}
+}
+
+</style>
+
+<script>
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('case-number');
+        const suggestionsContainer = document.getElementById('suggestions-container');
+        const caseNameContainer = document.getElementById('case-name');
+
+        searchInput.addEventListener('input', function() {
+            const query = searchInput.value;
+            if (query.trim() === '') {
+                suggestionsContainer.innerHTML = '';
+                caseNameContainer.innerHTML = '';
+                return;
+            }
+
+            fetch(`/get_case_suggestions/?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    suggestionsContainer.innerHTML = '';
+
+                    data.suggestions.forEach(suggestion => {
+                        const suggestionElement = document.createElement('div');
+                        suggestionElement.classList.add('suggestion');
+                        suggestionElement.innerHTML = `${suggestion.numero}: ${suggestion.nom}`;
+                        suggestionElement.addEventListener('click', function() {
+                            searchInput.value = suggestion.numero;
+
+                            suggestionsContainer.innerHTML = '';
+
+                            const numero = encodeURIComponent(suggestion.numero);
+                            const nom = encodeURIComponent(suggestion.nom);
+                            const url = `/case_detail/${numero}/${nom}/`;
+
+        // Redirect to the constructed URL
+                             window.location.href = url;
+                        });
+                        suggestionsContainer.appendChild(suggestionElement);
+                    });
+                });
+        });
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!suggestionsContainer.contains(event.target) && event.target !== searchInput) {
+                suggestionsContainer.innerHTML = '';
+            }
+        });
+    });
+
+
+
+
+</script>
+{% endblock %}

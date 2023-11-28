@@ -1,0 +1,485 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="{% url 'index' %}">
+    <img src="{% url 'image' image_name='logo_white.png' %}" alt="Logo" style=" position: relative;right:40px; width: 200px; height: 140px;">
+</a>
+<div class="outer-container">
+    <div>
+        <p style="font-size:20px"><span style="color:#7CB9E8">GSM:</span> {{ gsm_details.GSM }}</p>
+        <p style="font-size:20px"><span style="color:#7CB9E8">Voucher Eligibility:</span>{{ gsm_details.Voucher_eligibilty }}</p>
+        <p style="font-size:20px"><span style="color:#7CB9E8">Email:</span> <u>{{ gsm_details.Email }}</u></p>
+        <p style="font-size:20px"><span style="color:#7CB9E8">Customer ID:</span> {{ gsm_details.Customer_ID }}</p>
+        <p style="font-size:20px"><span style="color:#7CB9E8">Voucher validity:</span> {{ gsm_details.Voucher_Validity }}</p>
+        <p style="font-size:20px"><span style="color:#7CB9E8">Voucher code:</span> {{ gsm_details.Voucher_code }}</p>
+    </div>
+    <div class="inner-container">
+        <div class="left-column">
+            <p><strong style="color:rgb(0, 122, 165);font-size: 20px; ">Action:</strong></p>
+            <p>
+<u style="color:red">1 - Préparation :</u>
+<p>_Récupérer le nom du client de BackEnd via le Customer ID pour personnaliser votre interaction</p>
+<p>_Appeler le client</p><br>
+
+<u style="color:red">_ Si le client est Joignable :</u>
+
+<p style="color:#7CB9E8">1 - Prise de contact :</p>
+ <p>Se présenter et présenter la raison du contact</p><br>
+
+<p style="color:#7CB9E8">2 - Instauration d'une relation de confiance :</p>
+ <p>Apporter de l'énergie / Faciliter l'échange</p><br>
+
+<p style="color:#7CB9E8">3 - Découverte Raison de l'absence :</p>
+<p>Ecouter et relever les raisons d'absences de commandes</p><br>
+
+<p style="color:#7CB9E8">4 - Proposition :</p>
+<p>Présenter l'offre des vouchers</p>
+<p>Vérifier l'adresse mail du client et y apporter les rectifications si nécessaire</p>
+<p>Envoyer le code du voucher au client par Mail</p><br>
+
+<p style="color:#7CB9E8">5 - Closing :</p>
+<p>Verrouiller l'utilisation du voucher et encourager le client à passer une commande</p><br>
+
+<p style="color:#7CB9E8">6 - Historisation :</p>
+<p>Choisir la raison de non contact du menu déroulant</p>
+<p>Préciser le feedback post Voucher</p><br>
+<p>Clôturer le case sur Sprinklr avec le Choix</p><br>
+<p>L1 : Vouchers</p><br>
+<p>L2 : Voucher usage</p><br>
+<p>L3 : How to use</p><br>
+
+<u style="color:red">_Si le client est injoignable :</u>
+<p>Mentionner NON dans le champ "Client Joignable" et valider le formulaire"</p>
+        </div>
+        <div class="right-column">
+            <p><strong style="color:rgb(0, 122, 165);font-size: 20px; ">Script:</strong></p>
+            <div class="block">
+                <p dir="rtl" style="font-size:15px">عسلامة [Nom du client] Mr/Mme. معاك [Nom du conseiller] من Service Fidélisation Jumia Food، طلبناك خاطر لاحظنا إلي إنت معدتش معنا commande عل application Jumia Food عندك مدة وحبنا نعرفو إذا كان فما سبب معين ؟ <br>
+[نسمع السبب]</p><br>
+<u style="color:#7CB9E8">Feedback du client Neutre/Positif :</u><br>
+<p dir="rtl" style="font-size:15px">Merci Mr/Mme عل Feedback هذا،مهم برشة لينا بش نحسنو notre Service
+بش نشكروك علJumia Food ,votre fidélité  تهديلك  un coupon de remise de {{ gsm_details.Voucher_eligibilty }} dt valable jusqu'au 31 octobre  بش تستعملو كيف تعدي une nouvelle commande وتقعد parmi nos clients fidèles !</p><br>
+<u style="color:#7CB9E8">Si problème technique (application / OTP,...)</u><br>
+<p dir="rtl" style="font-size:15px">Merci Mr/Mme عل Feedback هذا،مهم برشة لينا بش نحسنو notre Service
+انا بش نطلب مل service client اكلمك إعاونك بش نلقاو حل و تنجم تعاود تكمندي معنا فيسع نشالله  و Jumia Food تهديلك un coupon de {{ gsm_details.Voucher_eligibilty }} dt valable jusqu'au 31 octobre بش تعدي به une commande كي تتحل المشكلة</p>
+<br><u style="color:#7CB9E8">Feedback du client négatif :</u>
+<p dir="rtl" style="font-size:15px">
+Merci Mr/Mme عل Feedback هذا،مهم برشة لينا بش نحسنو  notre Service . تاكد Mr/Mme إلي انا بش نعمل les remontées nécessaires à ce sujet ،أما احنا خدمنا برشة على l'amélioration de nos services ses derniers temps ونطلبو منك بش تعاود l'expérience معنا ،
+انا بش نبعثلك توا un coupon de remise de {{ gsm_details.Voucher_eligibilty }} dt valable jusqu'au 31 octobre .... بش تعدي به votre prochaine commande إلي انشالله بش تبدلك رايك و ترجع parmi nos clients fidèles !
+نعملو أعليك Mr/Mme بش تعطينا votre feedback فل enquête de satisfaction</p>
+                <br><u style="color:#7CB9E8">Conclusion :</u>
+                <p dir="rtl">
+                   donc Mr/Mme تنجم تستعمل ال-coupon متاعك مرة بركة مع أي restaurant disponible sur l'application Jumia valable jusqu'au 31 octobre ،<br>
+l'adresse mail إلي تستعمل فيها مازالت  [préciser l'adresse mail et la corriger si besoin]  ? على خاطر بش نبعثلك علاها توا le code de la commande.<br>
+عندكشي سؤال /إستفسار أخرMr/Mme ؟<br>
+Merci على وقتك وعل تفهم متاعك.A bientôt عل application Jumia Food.
+                </p>
+            </div> <div class="block">
+                <p>Bonjour Mr/Mme [Nom du client], je suis [Nom du conseiller] Du service client Jumia Food.<br> Je vous appelle aujourd'hui dans le cadre d’une opération de fidélisation, nous avons constaté que vous n’avez pas passé de commande sur notre application Jumia Food depuis quelque temps.<br>
+Pouvez-vous partager avec moi les raisons ?<br><br>
+
+[Découvrir le motif/le besoin du client]<br>
+
+<u style="color:#7CB9E8">Feedback du client Neutre/Positive :</u><br>
+
+Je vous remercie Mr/Mme, votre feedback très important pour améliorer la qualité de notre service. À ce titre, j'ai le plaisir de vous offrir un coupon de {{ gsm_details.Voucher_eligibilty }} dt valable jusqu'au 31 octobre et que vous pourrez utiliser quand vous voulez.<br><br>
+
+<u style="color:#7CB9E8">Si problème technique (application/ OTP....) : </u><br>
+ Je vous remercie Mr/Mme, votre feedback est très important pour améliorer la qualité de notre service. Nous allons prendre en charge immédiatement et résoudre ce problème technique dans les plus brefs délais. Vous pourrez ainsi réutiliser votre application. En attendant, Jumia Food vous offre un coupon de {{ gsm_details.Voucher_eligibilty }} dt valable jusqu'au 31 octobre que je vous envoie tout de suite par e-mail et que vous pourrez utiliser dès que votre accès à notre application sera rétabli.<br><br>
+
+<u style="color:#7CB9E8">Feedback du client négatif :</u><br>
+Je comprends tout à fait Mr/Mme, et vous assure que nous avons travaillé sur l'amélioration de nos services, A ce titre, nous vous proposons de bénéficier d'un coupon de {{ gsm_details.Voucher_eligibilty }} dt valable jusqu'au 31 octobre que vous pourrez utiliser dès votre prochaine commande pour renouveler votre expérience et rester parmi nos clients fidèles,<br><br>
+
+<u style="color:#7CB9E8">Conclusion :</u><br>
+Pour conclure, Mme/Mr, vous pouvez utiliser votre coupon jumia une seule foix avec n'importe quel restaurant disponible sur notre application et quand vous voulez jusqu'au 31 octobre.<br>
+Je vous envoie immédiatement le code de votre coupon par mail. L'adresse mail que vous utilisez est toujours [Préciser l'adresse mail et la corriger si besoin], <br>
+Je compte sur vous pour partager avec nous votre feedback à travers l'enquête de satisfaction.<br>
+Je vous remercie pour le temps que vous nous avez accordé et nous vous souhaitons une très belle journée / soirée et bon appétit
+
+                </p>
+            </div>
+            <div class="block">
+                <p  class="copy-text"><u style="color:#7CB9E8">Mail d'envoi de code pour un client joignable :</u><br>
+"Bonjour Monsieur /Mme ....<br><br>
+
+Suite à notre conversation, nous avons le plaisir de partager avec vous votre code du bon d'achat de {{ gsm_details.Voucher_eligibilty }} dt offert par Jumia et valable jusqu'au 31 octobre
+Code du coupon : {{ gsm_details.Voucher_code }}<br><br>
+
+Nous profitons pour vous rappeler les étapes à suivre pour l'utilisation de votre bon d'achat :<br>
+1-Entrez votre code de bon d'achat lors du paiement et cliquez sur "Ajouter le coupon".<br>
+2- La valeur du coupon est automatiquement déduite de votre achat.<br>
+3- Cliquez sur "Confirmer la commande."<br><br>
+
+Nous vous conseillons de vérifier les conditions d'utilisation du bon d'achat.<br>
+Pour toute aide supplémentaire, veuillez visiter notre page d'aide sur les coupons https://www.jumia.ci/sp-utiliser-un-bon/<br><br>
+
+Service Client Jumia<br><br>
+
+Bonne journée,"
+</p>
+            </div>
+            <div class="block">
+                <p  class="copy-text"><u style="color:#7CB9E8">Mail d'envoi de code pour un client injoignable :</u><br>
+"Bonjour Monsieur /Mme ....<br><br>
+
+Nous avons essayé de vous joindre à plusieurs tentatives sur le {{ gsm_details.GSM }}, Dans le cadre d'une opération de fidélisation, Jumia Food a le plaisir de vous offrir un bon de réduction d'une valeur de {{ gsm_details.Voucher_eligibilty }} dt. Ce coupon est valable jusqu'au 31 octobre.<br>
+Code du coupon : {{ gsm_details.Voucher_code }}.<br><br>
+
+Vous pouvez utiliser votre coupon jumia avec tous les restaurants disponibles sur notre application et quand vous voulez jusqu'au 31 octobre.<br><br>
+
+Nous profitons pour vous rappeler les étapes à suivre pour l'utilisation de votre bon d'achat :<br>
+1-Entrez votre code de bon d'achat lors du paiement et cliquez sur "Ajouter le coupon".<br>
+2- La valeur du coupon est automatiquement déduite de votre achat.<br>
+3- Cliquez sur "Confirmer la commande."<br><br>
+
+Nous vous conseillons de vérifier les conditions d'utilisation du bon d'achat.<br>
+Pour toute aide supplémentaire, veuillez visiter notre page d'aide sur les coupons https://www.jumia.ci/sp-utiliser-un-bon/<br><br>
+
+Service Client Jumia<br>
+
+Bonne journée,"
+</p>
+            </div>
+        </div>
+    </div>
+
+
+
+<div id="loading-spinner" class="loading-spinner">
+    <div class="spinner"></div>
+</div>
+
+
+
+<form method="post" action="{% url 'winback_form' gsm_details.GSM%}">
+  {% csrf_token %}
+  <div class="form-group">
+    {{ form.Client_Joignable.label_tag }}
+<select name="Client_Joignable" id="id_Client_Joignable" class="form-control">
+    <option  disabled selected></option> <!-- Add a blank and disabled option -->
+    <option value="Injoignable 1ère tentative" data-filter="1">Injoignable 1ère tentative</option>
+    <option value="Injoignable 2éme tentative" data-filter="2">Injoignable 2éme tentative</option>
+    <option value="Injoignable">Injoignable</option>
+    <option value="Joignable">Joignable</option>
+</select>
+
+
+
+  </div>
+  <div class="form-group" id="raison-de-non-commande-group">
+    {{ form.Raison_de_non_commande.label_tag }}
+    {{ form.Raison_de_non_commande }}
+  </div>
+  <div class="form-group" id="feedback-post-voucher-group">
+    {{ form.Feedback_post_Voucher.label_tag }}
+    {{ form.Feedback_post_Voucher }}
+  </div>
+  <div class="form-group" id="Mail_client_Valide-group">
+    {{ form.Mail_client_Valide.label_tag }}
+    {{ form.Mail_client_Valide }}
+</div>
+
+  <div class="form-group" id="commentaire-group">
+    {{ form.commentaire.label_tag }}
+    {{ form.commentaire }}
+  </div>
+  <button type="submit" class="btn btn-primary">Send</button>
+</form>
+
+
+</div>
+<style>
+.loading-spinner {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    z-index: 1000;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3); /* Lighter border */
+    border-top: 4px solid #007BFF; /* Blue border on top for the spinner */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px; /* Half of the height */
+    margin-left: -20px; /* Half of the width */
+    animation: spin 2s linear infinite; /* Spin animation */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+
+
+
+
+
+.red-text {
+  color: red;
+}
+
+    .outer-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top:-80px;
+
+    }
+    .inner-container {
+        margin-top:80px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom:50px;
+    }
+    .left-column, .right-column {
+        width: 40%; /* Adjust the width as needed */
+        padding: 10px;
+    }
+    .right-column {
+        border-radius: 1em;
+        width: 60%
+    }
+    .action{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+    }
+
+    .block {
+        border-radius: 1em;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.5);
+        padding: 1em;
+        margin-bottom:20px;
+    }
+
+    p {
+        color: white;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .copy-text {
+        cursor: pointer;
+    }
+.form-group{
+color:white;
+}
+
+ @media (max-width: 768px) {
+     .outer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top:0px;
+        }
+
+        .inner-container {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.left-column, .right-column {
+        width: 90%;
+        padding: 10px;
+    }
+    .right-column {
+        border-radius: 1em;
+        width: 100%
+    }
+    .action{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+    }
+
+ }
+</style>
+
+<script>
+  // Find all occurrences of [text] in the <p> elements and wrap them with a <span> element with a class
+  document.querySelectorAll('p').forEach(function(paragraph) {
+    paragraph.innerHTML = paragraph.innerHTML.replace(/\[(.*?)\]/g, '<span class="red-text">$1</span>');
+  });
+
+
+ function disableAndClearFields() {
+    const disabledFields = [
+      'raison-de-non-commande-group',
+      'feedback-post-voucher-group',
+      'Mail_client_Valide-group'
+    ];
+
+    // Disable and clear the values of the specified fields
+    disabledFields.forEach(function (fieldId) {
+      const field = document.getElementById(fieldId);
+      field.classList.add('disabled'); // Add a class to visually indicate disabled fields
+      const input = field.querySelector('input, select, textarea');
+      if (input) {
+        input.disabled = true;
+        if (input.tagName.toLowerCase() === 'input') {
+          input.value = ''; // Clear the input value
+        } else if (input.tagName.toLowerCase() === 'select') {
+          input.selectedIndex = -1; // Clear the selected option
+        } else if (input.tagName.toLowerCase() === 'textarea') {
+          input.value = ''; // Clear the textarea value
+        }
+      }
+    });
+  }
+
+  // Function to enable form fields
+  function enableFields() {
+    const disabledFields = [
+      'raison-de-non-commande-group',
+      'feedback-post-voucher-group',
+      'mail-client-valide-group',
+      'commentaire-group'
+    ];
+
+    // Enable the specified fields
+    disabledFields.forEach(function (fieldId) {
+      const field = document.getElementById(fieldId);
+      field.classList.remove('disabled'); // Remove the disabled class
+      const input = field.querySelector('input, select, textarea');
+      if (input) {
+        input.disabled = false;
+      }
+    });
+  }
+
+  // Initialize the form fields based on the initial selection
+  const clientJoignableSelect = document.getElementById('id_Client_Joignable');
+  const initialSelection = clientJoignableSelect.value;
+  if (initialSelection === 'Injoignable 1ère tentative' || initialSelection === 'Injoignable 2éme tentative' || initialSelection === 'Injoignable') {
+    disableAndClearFields();
+  }
+
+  // Add an event listener to the select element to dynamically enable/disable fields
+  clientJoignableSelect.addEventListener('change', function () {
+    const selectedValue = clientJoignableSelect.value;
+    if (selectedValue === 'Injoignable 1ère tentative' || selectedValue === 'Injoignable 2éme tentative' || selectedValue === 'Injoignable') {
+      disableAndClearFields();
+    } else {
+      enableFields();
+    }
+  });
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const clientJoignableSelect = document.getElementById('id_Client_Joignable');
+  const gsmClientJoignable = '{{ gsm_details.Client_Joignable }}';
+  const databaseClientJoignable = '{{ gsm_details.Client_Joignable }}'; // Replace with the actual field name from your model
+
+  // Function to enable or disable options based on the selected value and database value
+  function updateSelectOptions() {
+    const options = clientJoignableSelect.options;
+    const selectedValue = gsmClientJoignable;
+    const isDatabaseClientJoignableEmpty1 = databaseClientJoignable === '';
+    const isDatabaseClientJoignableEmpty2 = databaseClientJoignable === 'None';
+    const isDatabaseClientJoignableEmpty3 = databaseClientJoignable === ' ';
+
+    // Enable all options first
+    for (let i = 0; i < options.length; i++) {
+      options[i].disabled = false;
+    }
+
+    // Disable options based on the selected value and database value
+    if (!selectedValue || selectedValue === '' || isDatabaseClientJoignableEmpty1 || isDatabaseClientJoignableEmpty2 || isDatabaseClientJoignableEmpty3) {
+      // Disable "Injoignable 2éme tentative" and "Injoignable"
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === 'Injoignable 2éme tentative' || options[i].value === 'Injoignable'|| options[i].value === '') {
+
+          options[i].disabled = true;
+        }
+      }
+    } else if (selectedValue === 'Injoignable 1ère tentative') {
+      // Disable "Injoignable 1ère tentative" and "Injoignable"
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === 'Injoignable 1ère tentative' || options[i].value === 'Injoignable' || options[i].value === '') {
+          options[i].disabled = true;
+        }
+      }
+    } else if (selectedValue === 'Injoignable 2éme tentative') {
+      // Disable "Injoignable 2éme tentative" and "Injoignable"
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === 'Injoignable 2éme tentative' || options[i].value === 'Injoignable 1ère tentative' || options[i].value === '') {
+          options[i].disabled = true;
+        }
+      }
+    }
+  }
+
+  // Initialize the select options
+  updateSelectOptions();
+
+  // Event listener to update options when the select value changes
+  clientJoignableSelect.addEventListener('change', updateSelectOptions);
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const copyableParagraphs = document.querySelectorAll('.copy-text');
+    copyableParagraphs.forEach(function(paragraph) {
+        paragraph.addEventListener('click', function() {
+            const textToCopy = paragraph.textContent;
+            const startIndex = textToCopy.indexOf('"');
+            const endIndex = textToCopy.lastIndexOf('"');
+
+            if (startIndex !== -1 && endIndex !== -1 && startIndex < endIndex) {
+                const textWithinQuotes = textToCopy.slice(startIndex + 1, endIndex);
+
+                // Create a temporary textarea to hold the text
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = textWithinQuotes;
+                document.body.appendChild(tempTextarea);
+
+                // Copy the text from the temporary textarea
+                tempTextarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextarea);
+            }
+        });
+    });
+});
+
+
+window.addEventListener('beforeunload', function (e) {
+    console.log('Before unload event fired');
+    // Make an API call to release the lock when the user leaves the page
+    fetch('{% url 'release_lock' gsm_details.GSM %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    });
+});
+
+</script>
+
+
+
+
+{% endblock %}

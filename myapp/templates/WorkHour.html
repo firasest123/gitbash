@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navigation.html' %}
+<h1 style="text-align: center;color:white;font-size: 500%;">Votre Planning</h1>
+<br>
+<style>
+        /* Style CSS pour réduire la taille de la div en pourcentage */
+        .maDiv {
+            width: 95%; /* Définissez la largeur à 90% de la largeur parente */
+            height: 150%; /* Définissez la hauteur à 50% de la hauteur parente */
+            background-color: white;
+            position : relative;
+            top: auto;
+            margin: auto;
+            border-radius: 30px; /* Ajoutez une bordure arrondie de 15px */
+               }
+</style>
+
+<div class="maDiv" >  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <!-- Conteneur pour le calendrier -->
+    <div id="calendar"></div>
+    <script>
+
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'agendaWeek ,month'
+            },
+            defaultTimedEventDuration: '01:00:00',
+            editable: false,
+            events: {{ events | safe }},
+            eventRender: function(event, element) {
+            },
+            timeFormat: 'H:mm',  // Format de l'heure au format 24 heures
+            slotLabelFormat: 'H:mm',  // Format de l'en-tête de l'agenda au format 24 heures
+            axisFormat: 'H:mm',  // Format des heures sur l'axe vertical
+            minTime: '09:00',  // Heure de début personnalisée
+            maxTime: '28:00',
+            lang: 'fr',
+        });
+
+    });
+
+</script>
+
+</div>
+ {% endblock %}
+

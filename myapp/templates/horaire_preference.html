@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'index' %}">
+    <img src="{% url 'image' image_name='logo_white.png' %}" alt="Logo" style=" position: relative;right:40px; width: 200px; height: 140px;">
+</a>
+<h1 style="color:white;display: flex;justify-content: center;font-size:45px;">Préférence de régime horaire</h1>
+<div class="first_text">
+Nous souhaiterions connaître vos préférences en ce qui concerne le planning. Votre opinion est précieuse pour mieux répondre à vos besoins.<br>
+Pour répondre au sondage, nous partageons avec vous les informations suivantes :<br><br>
+La grille des salaires par régime horaire :
+</div>
+    <table>
+        <tr>
+            <th>Régime Horaire</th>
+            <th>Salaire de base Net</th>
+            <th>Prime Agilité Nette</th>
+            <th>Prime Perf Nette</th>
+            <th>Salaire de base Net + Prime</th>
+        </tr>
+        <tr>
+            <th>48 Hrs</th>
+            <th>704</th>
+            <th>15%</th>
+            <th>15%</th>
+            <th>939</th>
+        </tr>
+        <tr>
+            <th>40 Hrs</th>
+            <th>587</th>
+            <th>15%</th>
+            <th>15%</th>
+            <th>783</th>
+        </tr>
+        <tr>
+            <th>30 Hrs</th>
+            <th>440</th>
+            <th>15%</th>
+            <th>15%</th>
+            <th>587</th>
+        </tr>
+        <tr>
+            <th>24 Hrs</th>
+            <th>352</th>
+            <th>15%</th>
+            <th>15%</th>
+            <th>470</th>
+        </tr>
+    </table>
+<div class="second_text">
+Nous tenons à souligner que le montant des salaires est à titre indicatif et peut varier en fonction de plusieurs facteurs, notamment le nombre d'heures travaillées, les cotisations et d'autres éléments spécifiques à votre situation.</div>
+<div class="form-container" style="color:white">
+    <form class="custom-form" method="post" style="color:white">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enregistrer</button>
+    </form>
+</div>
+<div class="second_text">
+
+L’employeur se réserve le droit d’appliquer votre régime horaire contractuel indépendamment du régime préférentiel choisi, les nécessités de service prévalant. <br><br>
+Le sondage est ouvert jusqu’au 30/09
+</div>
+<style>
+
+    .first_text{
+    color:white;
+    margin-left:20px;
+    margin-bottom:15px;
+    }
+
+    .second_text{
+    color:white;
+    margin-left:20px;
+    padding-bottom:25px;
+    }
+
+  table {
+    margin: 0 auto;
+    color:white;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+/* Add borders to table cells */
+table, th, td {
+    border: 1px solid white;
+    padding:5px;
+}
+
+/* Center align the table */
+table {
+    margin-bottom: 25px;
+}
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1em;
+}
+
+/* Style the form */
+.custom-form {
+    max-width: 750px;
+    padding: 20px;
+    border-radius: 1em;
+}
+
+.custom-form input[type="text"],
+.custom-form input[type="number"],
+.custom-form select,
+.custom-form textarea {
+    width: 100%;
+    padding-block: 10px;
+    padding-inline: 20px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.custom-form button[type="submit"] {
+    margin: 0 auto;
+    display: block;
+    background-color: white;
+    font-size:15px;
+    font-weight:600;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+      table {
+    margin: 0 auto;
+    color:white;
+    border-collapse: collapse;
+    width: 20px;
+
+}
+table, th, td {
+    border: 1px solid white;
+
+    font-weight:100;
+    font-size: 12px;
+}
+}
+</style>
+{% endblock %}

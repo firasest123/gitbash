@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navigation.html' %}
+  <div style="float: left; width: 50%; margin-top:40px;">
+    <img style="width: 10%; float: left; margin-left: 20px; margin-bottom: 40px;" src="{{ custom_user.image.url }}" alt="User Image">
+    <div style="float: left; margin-left: 10px;margin-bottom: 10px;">
+      <p> {{ ningen_staff.Prenom }} {{ ningen_staff.Nom }}</p>
+      <p>{{ ningen_staff.Fonction }}</p>
+      <p>{{ ningen_staff.Activité_actuelle }} {{ ningen_staff.Micro_activité_actuelle }}</p>
+      <a href="{% url 'modify_staff' id_beside=ningen_staff.ID_Beside %}">
+        <button class="button" type="button">Modifier</button>
+      </a>
+    </div>
+    <div class="flip-card" ondblclick="flipCard()">
+        <div class="flip-card-inner">
+    <div class="Personnelle" style="clear: both; margin:20px;">
+        <img style="width: 7%; float: right; margin-left: 20px; " src="{% url 'image' image_name='doubleclick.png' %}">
+        <h1>Informations Employé(e)</h1>
+    <p><span>CIN:</span> {{ ningen_staff.CIN }}</p>
+    <p><span>Téléphone:</span> {{ ningen_staff.Tel }}</p>
+    <p><span>Date de naissance:</span> {{ ningen_staff.Date_de_naissance }}</p>
+    <p><span>Age:</span> {{ ningen_staff.age }}</p>
+    <p><span>Genre:</span> {{ ningen_staff.Genre }}</p>
+    <p><span>Situation:</span> {{ ningen_staff.Situation }}</p>
+    <p><span>Nombre d'enfants:</span> {{ ningen_staff.Nombre_d_enfants }}</p>
+    <p><span>Niveau d'étude:</span> {{ ningen_staff.Niveau_d_etude }}</p>
+    <p><span>Diplome:</span> {{ ningen_staff.Diplome }}</p>
+    <p><span>Centre d'intérêt:</span> {{ ningen_staff.Centre_d_intérêt }}</p>
+    <p><span>Mail personel:</span> {{ ningen_staff.Mail_personel }}</p>
+    <p><span>Adresse postale:</span> {{ ningen_staff.Adresse_postale }}</p>
+    </div>    
+
+
+    <div class="Prod" style="clear: both; margin:20px;">
+    <h1>Informations Employeur </h1>
+    <p><span>ID Beside:</span>  {{ ningen_staff.ID_Beside }}</p>
+    <p><span>Numéro du groupe:</span> {{ ningen_staff.Ngroupe }}</p>
+    <p><span>Matricule:</span> {{ ningen_staff.Matricule }}</p>
+    <p><span>CL:</span>  {% for cl in ningen_staff.CL.all %}{{ cl.name }} <br> {% endfor %}</p>
+    <p><span>N+1:</span> {{ ningen_staff.N1 }}</p>
+    <p><span>N+2:</span> {{ ningen_staff.N2 }}</p>
+    <p><span>Date d'embauche:</span> {{ ningen_staff.Date_embauche }}</p>
+    <p><span>Date fin 1ére période d'essai:</span> {{ ningen_staff.Date_fin_1ere_période_d_essai }}</p>
+    <p><span>Type de contrat:</span> {{ ningen_staff.Type_de_contrat }}</p>
+    <p><span>Régime horaire:</span> {{ ningen_staff.Régime_horaire }}</p>
+    <p><span>Titulaire:</span> {{ ningen_staff.Titulaire }}</p>
+    <p><span>Date de titularisation:</span> {{ ningen_staff.Date_de_titularisation }}</p>
+    <p><span>LOB actuelle:</span> {{ ningen_staff.LOB_actuelle }}</p>
+    <p><span>Affectation actuelle CANAL:</span> {{ ningen_staff.Affectation_actuelle_CANAL }}</p>
+    <p><span>Télétravail:</span> {% if ningen_staff.TT %}✓{% else %}✗{% endif %}</p>
+    <p><span>Statut à date:</span> {{ ningen_staff.Statut_à_date }}</p>
+    <p><span>Mission spéciale:</span> {{ ningen_staff.Mission_spéciale }}</p>
+    <p><span>Date FPE:</span> {{ ningen_staff.Date_FPE }}</p>
+    </div>
+    
+</div>
+</div>
+</div>
+
+<div class="rightinfo" >
+    <h1>Compétences</h1>
+    {% for activity in activities %}
+    
+    <div class="activité" ondblclick="editActivity('{{ activity.agent.ID_Beside }}', '{{ activity.numero_activite }}')">
+        <p>Compétences {{ activity.numero_activite }}</p>
+        <p><span>Nom:</span> {{ activity.nom_activite }}</p>
+        <p><span>Line of business:</span> {{ activity.Line_of_business }}</p>
+        <p><span>Skills CS:</span> {% if activity.Skills_CS %}✓{% else %}✗{% endif %}</p>
+        <p><span>Skills Sales:</span> {% if activity.Skills_Sales %}✓{% else %}✗{% endif %}</p>
+        <p><span>Skills BO:</span> {% if activity.Skills_BO %}✓{% else %}✗{% endif %}</p>
+        <p><span>Skills Confirmation:</span> {% if activity.Skills_Confirmation %}✓{% else %}✗{% endif %}</p>
+        <p><span>CANAL IB:</span> {% if activity.CANAL_IB %}✓{% else %}✗{% endif %}</p>
+        <p><span>CANAL OB:</span> {% if activity.CANAL_OB %}✓{% else %}✗{% endif %}</p>
+        <p><span>CANAL Live Chat:</span> {% if activity.CANAL_Live_Chat %}✓{% else %}✗{% endif %}</p>
+    </div>
+    {% endfor %}
+    <div class="activité" onclick="addNewActivity('{{ ningen_staff.ID_Beside }}')">
+
+                <p>‎</p>
+                <p>‎</p>
+                <p>‎ </p>
+                <p>‎</p>
+                <p style="font-size: 55px;margin: 0;display: flex;
+                align-items: center;
+                justify-content: center;">+</p>
+                <p>‎ </p>
+                <p>‎</p>
+                <p>‎</p>
+                <p>‎ </p>
+        </div>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function flipCard() {
+        $(".flip-card").toggleClass("flipped");
+    }
+
+    function editActivity(agentId, numeroActivite) {
+      window.location.href = "{% url 'modify_activity' %}?agent=" + agentId + "&numero_activite=" + numeroActivite;
+    }
+
+    function addNewActivity(agentId) {
+      window.location.href = "{% url 'add_activity' %}?agent="+ agentId;
+    }
+</script>
+  <style>
+  
+    *{
+        color:white
+    }
+
+    .Prod {
+        border-radius: 1em;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.5);
+        padding: 1em;
+        position: relative;
+        top: 100px;
+        backface-visibility: hidden;
+        width: 90%;
+        box-sizing: border-box;
+    }
+    .Prod p{
+        font-weight: 500;
+    }
+
+    .Personnelle{
+        border-radius: 1em;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.5);
+        padding: 1em;
+    }
+    .Personnelle p{
+        font-weight: 500;
+    }
+    span{
+        color: rgb(45, 175, 230); 
+        font-weight: bold;
+    }
+
+    .rightinfo {
+    float: left;
+    width: 45%;
+    border-radius: 1em;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    padding: 1em;
+    position: relative;
+    left: 50px;
+    top: 195px;
+}
+
+.activité {
+    display: inline-block;
+    width: calc(45%); 
+    margin-left: 20px; 
+    margin-bottom: 20px; 
+    border-radius: 1em;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 3px solid rgba(255, 255, 255, 0.185);
+    padding: 1em;
+    box-sizing: border-box;
+    cursor: pointer;
+    
+}
+
+.add-activity-button {
+    display: inline-block;
+    width: calc(45%);
+    height: 435px;
+    margin-right: 10px;
+    border-radius: 1em;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 3px solid rgba(255, 255, 255, 0.185);
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    top: -175px;
+}
+
+
+
+.flip-card {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.flip-card-inner {
+
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.Personnelle,
+.Prod {
+    position: absolute;
+    top: 140px;   
+    backface-visibility: hidden;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.Personnelle {
+    z-index: 1;
+}
+
+.Prod {
+    transform: rotateY(180deg);
+}
+
+.button{
+    font-weight: 600;
+    text-decoration: none;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 20px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+</style>
+
+{% endblock %}

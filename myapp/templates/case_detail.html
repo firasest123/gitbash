@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navigation.html' %}
+<style>
+    .outer-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top:-80px;
+
+    }
+    .inner-container {
+        margin-top:80px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom:50px;
+    }
+    .left-column, .right-column {
+        width: 40%;
+        padding: 10px;
+    }
+    .right-column {
+        border-radius: 1em;
+        width: 50%
+    }
+    .action{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+    }
+
+    .block {
+        border-radius: 1em;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.5);
+        padding: 1em;
+    }
+
+    p {
+        color: white;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .copy-text {
+        cursor: pointer;
+    }
+
+
+ @media (max-width: 768px) {
+     .outer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top:0px;
+        }
+
+        .inner-container {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.left-column, .right-column {
+        width: 90%;
+        padding: 10px;
+    }
+    .right-column {
+        border-radius: 1em;
+        width: 100%
+    }
+    .action{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+    }
+
+ }
+</style>
+
+
+<div class="outer-container">
+    <div>
+        <p style="font-size: 20px;"><strong>Numéro de statut:</strong> {{ case_obj.numero }}</p>
+        <p style="font-size: 20px;"><strong>Nom:</strong> {{ case_obj.nom }}</p>
+    </div>
+    <div class="inner-container">
+        {% if case_obj.formatted_macro != "None" %}
+        <div class="left-column">
+            <p><strong style="color:rgb(0, 122, 165);font-size: 20px; ">Action:</strong></p>
+            <p>{{ case_obj.formatted_action|safe }}</p>
+        </div>
+        <div class="right-column">
+            <p><strong style="color:rgb(0, 122, 165);font-size: 20px; ">Macro:</strong></p>
+            <div class="block">
+                {{ case_obj.formatted_macro|safe }}
+            </div>
+        </div>
+        {% else %}
+        <div class="action">
+            <p><strong style="color:rgb(0, 122, 165);font-size: 20px; ">Action:</strong></p>
+            <p>{{ case_obj.formatted_action|safe }}</p>
+        </div>
+            {% endif %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const copyableParagraphs = document.querySelectorAll('.copy-text');
+    copyableParagraphs.forEach(function(paragraph) {
+        paragraph.addEventListener('click', function() {
+            const textToCopy = paragraph.textContent;
+            const startIndex = textToCopy.indexOf('"');
+            const endIndex = textToCopy.lastIndexOf('"');
+
+            if (startIndex !== -1 && endIndex !== -1 && startIndex < endIndex) {
+                const textWithinQuotes = textToCopy.slice(startIndex + 1, endIndex);
+
+                // Create a temporary textarea to hold the text
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = textWithinQuotes;
+                document.body.appendChild(tempTextarea);
+
+                // Copy the text from the temporary textarea
+                tempTextarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextarea);
+
+                // Save the copied macro to the server
+                fetch('/save_copy_macro/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({
+                        text: textWithinQuotes,
+                        link: window.location.href,
+                    }),
+                });
+            }
+        });
+    });
+});
+
+    </script>
+{% endblock %}

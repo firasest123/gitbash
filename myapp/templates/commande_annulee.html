@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navigation.html' %}
+    <div class="content-container">
+
+            <a href="{% url 'case_list' 'Commande annulée avant confirmation vendeur' %}" class="triangle-button blue-border">
+                <div class="triangle-text">Avant confirmation vendeur</div>
+            </a>
+            <a href="{% url 'case_list' 'Commande annulée après confirmation vendeur' %}" class="triangle-button green-border">
+                <div class="triangle-text">Après confirmation vendeur</div>
+            </a>
+    </div>
+
+<style>
+    .content-container {
+                display: flex;
+                margin-top:100px;
+                align-items: center;
+                justify-content: center;
+                gap:50px;
+            }
+
+     .triangle-button {
+                display: inline-block;
+                position: relative;
+                width: 0;
+                height: 0;
+                border-left: 70px solid transparent;
+                border-right: 70px solid transparent;
+
+            }
+
+            .blue-border {
+                border-bottom: 120px solid rgb(0, 63, 119);
+            }
+
+
+            .green-border {
+                border-bottom: 120px solid rgb(0, 122, 156);
+            }
+
+    .triangle-text {
+                position: absolute;
+                top: 140px; /* Adjust the distance from the triangle */
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+                font-size: 16px;
+                text-decoration: none;
+                color: white;
+                max-height: 60px; /* Adjust the max height as needed */
+                overflow: hidden;
+                line-height: 1.2;
+                font-family: "Poppins", sans-serif; /* Use the Poppins font */
+            }
+
+</style>
+{% endblock %}

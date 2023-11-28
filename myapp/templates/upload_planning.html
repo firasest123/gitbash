@@ -1,0 +1,370 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navigation.html' %}
+
+
+<h1 style="text-align: center; color: white; font-size: 400%;">Hours Manager</h1>
+<br>
+
+
+<style>
+    .vertical-form {
+    display: flex;
+    flex-direction: column;
+    }
+
+    .vertical-form label {
+    margin-bottom: 5px;
+    }
+
+    .form-container {
+        width: 70%; /* Définissez la largeur de la div */
+        margin: 0 auto; /* Centrez la div horizontalement */
+        padding: 20px; /* Ajoutez un peu d'espacement intérieur */
+        background-color: #E1F0E6; /* Couleur de fond */
+        border-radius: 20px; /* Bordures arrondies */
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #005496; /* Couleur de fond du bouton */
+        color: white; /* Couleur du texte du bouton */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3; /* Couleur de fond au survol */
+    }
+
+    .grid-row {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border-radius: 10px;
+
+    }
+
+    .grid-container {
+        justify-content: center;
+        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr; /* Une seule colonne qui prend toute la largeur */
+        gap: 20px; /* Espacement entre les div */
+        margin: 0 auto;
+    }
+
+    .modal {
+    display: none;
+    position: fixed;
+    top: 0; /* Ajustez cette valeur selon vos besoins */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    }
+
+    .modal-content {
+    background-color: white;
+    width: 70%;
+    margin: 3% auto 10% auto; /* Réduisez la valeur de margin-top (5% dans cet exemple) */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    }
+
+    .scrollable-table {
+        margin: 0 auto;
+        background-color: #E1F0E6; /* Couleur de fond */
+        border-radius: 20px;
+        width: 90%;
+        max-height: 380px;
+        overflow: auto;
+    }
+
+    .scrollable-table::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .scrollable-table::-webkit-scrollbar-thumb {
+        background-color: #005496;
+        border-radius: 6px;
+    }
+
+    .scrollable-table::-webkit-scrollbar-track {
+        background-color: #f5f5f5;
+    }
+
+    .scrollable-table table {
+        width: 100%;
+        /* Vous pouvez ajouter d'autres styles au tableau si nécessaire */
+    }
+
+    .ma-table-scrollable {
+    margin: 0 auto;
+    background-color: #E1F0E6; /* Couleur de fond */
+    border-radius: 20px;
+    width: 90%;
+    max-height: 400px;
+    overflow: auto;
+    }
+
+    .ma-table-scrollable::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .ma-table-scrollable::-webkit-scrollbar-thumb {
+        background-color: #005496;
+        border-radius: 6px;
+    }
+
+    .ma-table-scrollable::-webkit-scrollbar-track {
+        background-color: #f5f5f5;
+    }
+
+    .ma-table-scrollable table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+
+
+    /* Style alternatif pour les lignes (pour une meilleure lisibilité) */
+    .ma-table-scrollable tr:nth-child(even) {
+        background-color: #f2f2f2; /* Change la couleur de fond des lignes paires */
+    }
+</style>
+<div class="grid-container">
+
+    <div class="grid-row" style="width: 65%; margin: 0 auto;">
+        <button id="information-button" style="border-radius: 50%;float: right;">i</button>
+        <div class="form-container">
+            <h2 style="text-align: center; font-size: 200%; margin: 10px;">Enregistrer un planning</h2>
+            <br>
+            <form method="post" enctype="multipart/form-data" action="{% url 'upload_planning' %}">
+                {% csrf_token %}
+                {%if erorupload != None %}
+                    {%if erorupload == "Planning Enregistré"%}
+                        <h5 style="color : green">{{ erorupload }}</h5>
+                    {% else %}
+                        <h5 style="color : red">{{ erorupload }}</h5>
+                    {% endif %}
+                {% endif %}
+                {{ form.as_p }}
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="grid-row" style="width: 70%; margin: 0 auto;"><div>
+        <h3 style="text-align: center; font-size: 200%; margin: 10px;">Derniers Ajouts</h3>
+        <br>
+        <div  class="scrollable-table">
+            <table style="width: 55%; margin: 0 auto;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Nom du fichier</th>
+                    <th>Date d'ajout</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for upload in uploads %}
+                    <tr>
+
+                        <td><a href="#" id="delete-upload-{{ upload.id_upload }}" class="delete-upload"><button>Supprimer</button></a></td>
+                        <td>{{ upload.nom_excel }}</td>
+                        <td>{{ upload.date }}</td>
+                        <td><a><button href="#" id="show-sessions-{{ upload.id_upload }}" class="show-sessions" >Afficher les sessions</button></a></td>
+
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+            </table>
+        </div>
+        </div>
+        <br>
+    </div>
+    {% if work_hours %}
+    <div  class="grid-row" style="width: 80%; margin: 0 auto;">
+            <h2 style="text-align: center; font-size: 250%; margin: 10px;">Aperçu des sessions du <br><p style="color:#004f91;">{{nom_excel}}</p></h2><br>
+        <br>
+        <div class="ma-table-scrollable">
+    <!-- Le reste de votre contenu -->
+
+        <table style="width: 70%; margin: 0 auto; max-height: 100px; overflow-y: auto;">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Date</th>
+                    <th>Traitement</th>
+                    <th>Debut</th>
+                    <th>Pause</th>
+                    <th>Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for session in work_hours %}
+            <tr>
+                <td>{{ session.fullname }}</td>
+                <td>{{ session.date }}</td>
+                <td>{{ session.traitement }}</td>
+                <td>{{ session.debut }}</td>
+                <td>{{ session.pause }}</td>
+                <td>{{ session.fin }}</td>
+            </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+            </div>
+        <br><br>
+    </div>
+    {% endif %}
+</div>
+<br><br>
+<div class="modal" id="confirmDeleteModal">
+    <div class="modal-content">
+        <br>
+        <p style="text-align: center; font-size: 150%; margin: 10px;">Êtes-vous sûr de vouloir supprimer ?</p>
+        <br>
+        <button id="confirmDeleteButton">Oui</button>
+        <button id="cancelDeleteButton">Annuler</button>
+    </div>
+</div>
+<div class="modal" id="information-modal">
+    <div class="modal-content">
+        <h2 style="text-align: center; font-size: 250%; margin: 10px;">Critères d'enregistrements</h2>
+        <br>
+        <div class="grid-row" >
+        <table style=" margin: 0 auto;">
+            <tr>
+                <th>
+                    <ul style="text-align: start;font-size: 130%;">
+                        <li >Ligne 7 : Date des sessions</li>
+                        <br>
+                        <li >Ligne 9 : Premier Agent</li>
+                        <br>
+                        <li >Respectez les colonnes des <br>categories de données <br>(A : Riders , B : Traitement, ...)</li>
+                        <br>
+                        <li >N'oubliez pas le 'Done' à la fin de la liste.</li>
+                    </ul>
+                </th>
+                <th><img id="information-image" src="" alt="Information Image" style="width: 65%;"></th>
+            </tr>
+        </table>
+        <br>
+         </div>
+        <button id="close-information-button">Fermer</button>
+    </div>
+
+</div>
+<script>
+
+    const informationButton = document.getElementById('information-button');
+    const informationModal = document.getElementById('information-modal');
+    const informationImage = document.getElementById('information-image');
+
+    informationButton.addEventListener('click', () => {
+        // Charger l'image d'information depuis le serveur
+        const imageUrl = "{% url 'image' image_name='info_upload_planning.png' %}"; // Remplacez par l'URL de votre image d'information
+        informationImage.src = imageUrl;
+        informationModal.style.display = 'block';
+    });
+
+    const closeInformationButton = document.getElementById('close-information-button');
+    closeInformationButton.addEventListener('click', () => {
+        informationModal.style.display = 'none';
+    });
+
+    // Gérer la touche "Échap"
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            informationModal.style.display = 'none';
+        }
+    });
+
+    function openModal() {
+        document.getElementById('myModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('myModal').style.display = 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteLinks = document.querySelectorAll(".delete-work-hour");
+        const deleteLinks2 = document.querySelectorAll(".delete-upload");
+        const showsessions = document.querySelectorAll(".show-sessions");
+        console.log("hello",showsessions);
+        const modal = document.getElementById("confirmDeleteModal");
+        const confirmButton = document.getElementById("confirmDeleteButton");
+        const cancelButton = document.getElementById("cancelDeleteButton");
+        const sessionsContainer = document.getElementById("sessions-container");
+
+        let workHourIdToDelete = null;
+        // Ajoutez un gestionnaire d'événement de clic aux liens de suppression
+        deleteLinks.forEach(function (link) {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                workHourIdToDelete = this.getAttribute("id").replace("delete-work-hour-", "");
+                modal.style.display = "block";
+            });
+        });
+
+        // Ajoutez un gestionnaire d'événement au bouton de confirmation
+        confirmButton.addEventListener("click", function () {
+            if (workHourIdToDelete) {
+                window.location.href = `{% url 'delete_work_hour' 0 %}`.replace("0", workHourIdToDelete);
+            }
+        });
+
+        // Ajoutez un gestionnaire d'événement au bouton d'annulation
+        cancelButton.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        //delete upload !
+        let uploadIdToDelete = null;
+        // Ajoutez un gestionnaire d'événement de clic aux liens de suppression
+        deleteLinks2.forEach(function (link) {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                uploadIdToDelete = this.getAttribute("id").replace("delete-upload-", "");
+                modal.style.display = "block";
+            });
+        });
+
+        // Ajoutez un gestionnaire d'événement au bouton de confirmation
+        confirmButton.addEventListener("click", function () {
+            if (uploadIdToDelete) {
+                window.location.href = `{% url 'delete_upload' 0 %}`.replace("0", uploadIdToDelete);
+            }
+        });
+
+        let uploadId = null;
+        // Ajoutez un gestionnaire d'événement de clic aux liens de suppression
+        showsessions.forEach(function (link) {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                uploadId = this.getAttribute("id").replace("show-sessions-","");
+                window.location.href = `{% url 'show_session' 0 %}`.replace("0", uploadId);
+            });
+        });
+    });
+
+</script>
+<!-- Assurez-vous que ce code est placé après la définition de vos éléments HTML -->
+
+{% endblock %}

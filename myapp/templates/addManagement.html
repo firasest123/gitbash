@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'index' %}">
+    <img src="{% url 'image' image_name='logo_white.png' %}" alt="Logo" style=" position: relative;right:40px; width: 200px; height: 140px;">
+</a>
+<h1 style="color:white;display: flex;justify-content: center;">Ajouter collaborateur</h1>
+    <form method="post" style="color:white;display: grid;;flex-wrap: wrap;flex-direction: column;justify-content: center;align-items: center;">
+
+        {% csrf_token %}
+
+        {{ form.Matricule.name}}
+        {{ form.Matricule }}<br>
+
+        <label>ID BeSIDe:</label>
+        {{ form.ID_Beside }}<br>
+
+        <label>Prénom:</label>
+        {{ form.Prenom }}<br>
+
+        {{ form.Nom.name }}
+        {{ form.Nom }}<br>
+
+        <label>Fonction:</label>
+        {{ form.Fonction}}<br>
+
+        <label>Genre:</label>
+        {{ form.Genre}}<br>
+
+        <label>Activités:</label><br>
+        {% for checkbox in form.Act %}
+            {{ checkbox }}<br>
+        {% endfor %}
+
+        <label>N+1:</label>
+        {{ form.N1 }}<br>
+
+
+        <label for="{{ form.Date_embauche.id_for_label }}">Date d'embauche:</label>
+        <input type="date" name="{{ form.Date_embauche.name }}" value="{{ form.Date_embauche.value|default:'' }}" id="{{ form.Date_embauche.id_for_label }}"><br>
+
+        <label for="{{ form.Durrée_mission.id_for_label }}">Durrée mission:</label>
+        <input type="date" name="{{ form.Durrée_mission.name }}" value="{{ form.Durrée_mission.value|default:'' }}" id="{{ form.Durrée_mission.id_for_label }}"><br>
+
+        <label for="{{ form.Date_fin_1ere_période_d_essai.id_for_label }}">Date fin 1ére période d'essai:</label>
+        <input type="date" name="{{ form.Date_fin_1ere_période_d_essai.name }}" value="{{ form.Date_fin_1ere_période_d_essai.value|default:'' }}" id="{{ form.Date_fin_1ere_période_d_essai.id_for_label }}"><br>
+
+
+        <label>Type de contrat:</label>
+        {{ form.Type_de_contrat }}<br>
+
+        <label>Régime horaire:</label>
+        {{ form.Régime_horaire }}<br>
+
+        {{ form.CIN.name }}
+        {{ form.CIN }}<br>
+
+        {{ form.Titulaire.name }}
+        {{ form.Titulaire }}<br>
+
+        <label for="{{ form.Date_de_titularisation.id_for_label }}">Date de titularisation:</label>
+        <input type="date" name="{{ form.Date_de_titularisation.name }}" value="{{ form.Date_de_titularisation.value|default:'' }}" id="{{ form.Date_de_titularisation.id_for_label }}"><br>
+
+
+        <label>Téléphone:</label>
+        {{ form.Tel1 }}<br>
+
+        <label>Téléphone2:</label>
+        {{ form.Tel2 }}<br>
+
+        <label for="{{ form.Date_de_naissance.id_for_label }}">Date de naissance:</label>
+        <input type="date" name="{{ form.Date_de_naissance.name }}" value="{{ form.Date_de_naissance.value|default:'' }}" id="{{ form.Date_de_naissance.id_for_label }}"><br>
+
+
+        {{ form.Situation.name }}
+        {{ form.Situation }}<br>
+
+        <label>Nombre d'enfants:</label>
+        {{ form.Nombre_d_enfants }}<br>
+
+        <label>Niveau d'étude:</label>
+        {{ form.Niveau_d_etude }}<br>
+
+        <label>Diplôme:</label>
+        {{ form.Diplome }}<br>
+
+        <label>Centre d'intérêt:</label>
+        {{ form.Centre_d_intérêt }}<br>
+
+        <label>Mail personel:</label>
+        {{ form.Mail_personel }}<br>
+
+        <label>Adresse postale:</label>
+        {{ form.Adresse_postale }}<br>
+
+        <label>Statut à date:</label>
+        {{ form.Statut_à_date }}<br>
+
+        <label for="{{ form.Date_FPE.id_for_label }}">Date FPE:</label>
+        <input type="date" name="{{ form.Date_FPE.name }}" value="{{ form.Date_FPE.value|default:'' }}" id="{{ form.Date_FPE.id_for_label }}"><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}

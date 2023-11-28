@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'index' %}">
+    <img src="{% url 'image' image_name='logo_white.png' %}" alt="Logo" style=" position: relative;right:40px; width: 200px; height: 140px;">
+</a>
+<h2 style="color:white;display: flex;justify-content: center;">Ajouter Activite</h1>
+<p style="color:white;display: flex;justify-content: center;" >{{ ningen_staff.ID_Beside }}</p>
+
+<form style="color:white;display: grid;flex-wrap: wrap;flex-direction: column;justify-content: center;align-items: center;" method="post" >
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="save_and_add">Enregistrer et Ajouter</button>
+    <button type="submit" name="save">Enregistrer</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,133 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navigation.html' %}
+
+<div >
+    {% if cases %}
+        <h1 class="case-title">{{ cases.0.nom }}</h1>
+    {% else %}
+        <h1 class="case-title">No cases available</h1>
+    {% endif %}
+</div>
+
+<div class="brick-wall-container">
+
+    {% for case in cases|dictsort:'numero' %}
+        <a href="{% url 'case_detail' case.numero case.nom %}" class="brick-button">{{ case.numero }}</a>
+    {% endfor %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const brickButtons = document.querySelectorAll('.brick-button');
+        const colors = ['rgb(0,63,119)', 'rgb(0,84,150)', 'rgb(0,122,165)']; // Add your chosen colors here
+
+        brickButtons.forEach(button => {
+            const randomIndex = Math.floor(Math.random() * colors.length);
+            const randomColor = colors[randomIndex];
+            button.style.backgroundColor = randomColor;
+        });
+    });
+</script>
+
+<style>
+
+    .case-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 70px;
+        color: white;
+        font-size: 40px;
+
+    }
+
+.brick-wall-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    width: 100%;
+}
+
+.brick-button {
+        position: relative;
+        width: 100px;
+        height: 50px;
+        font-size: 18px;
+        text-align: center;
+        line-height: 60px;
+        text-decoration: none;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        border-radius: 30px;
+        transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
+        z-index: 1;
+        color: white;
+        background-color: rgb(0, 63, 119);
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+.brick-button:hover {
+        transform: scale(1.05); /* Slightly larger on hover */
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* Slightly increased shadow on hover */
+}
+
+.brick-button:nth-child(4n + 1) {
+    background-color: rgb(0,63,119);
+}
+
+.brick-button:nth-child(4n + 2) {
+    background-color: rgb(0,84,150);
+}
+
+.brick-button:nth-child(4n + 3) {
+    background-color: rgb(0,122,165);
+}
+
+
+@media (max-width: 768px) {
+
+.case-title {
+        color: white;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .brick-wall-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    width: 100%;
+}
+
+
+    .brick-button {
+        position: relative;
+        width: 70px;
+        height: 50px;
+        font-size: 18px;
+        text-align: center;
+        line-height: 60px;
+        text-decoration: none;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        border-radius: 30px;
+        transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
+        z-index: 1;
+        color: white;
+        background-color: rgb(0, 63, 119);
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+}
+</style>
+{% endblock %}

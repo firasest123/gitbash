@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'index' %}">
+  <img src="{% url 'image' image_name='logo_white.png' %}" alt="Logo" style=" position: relative;right:40px; width: 200px; height: 140px;">
+</a>
+    <h1 style="color:white;display: flex;justify-content: center;"> {{ activity.agent }}</h1> 
+    <form method="post" style="color:white;display: grid;flex-wrap: wrap;flex-direction: column;justify-content: center;align-items: center;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save Changes">
+    </form>
+{% endblock %}

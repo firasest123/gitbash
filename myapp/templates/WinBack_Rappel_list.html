@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navigation.html' %}
+    <div class="gsm-list">
+        {% for winback2 in winback2_list %}
+                <a href="{% url 'winback2_detail' winback2.GSM %}" class="gsm-button">{{ winback2.GSM }}</a>
+        {% endfor %}
+    </div>
+
+<style>
+.gsm-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    columns: 13;
+    -webkit-columns: 13;
+  }
+
+  .gsm-list li {
+    display: inline-block;
+    width: 100%; /* Adjust the width to control spacing between columns */
+    padding: 5px; /* Add padding for spacing between items */
+  }
+
+  .gsm-list a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    text-align: center;
+  }
+</style>
+
+{% endblock %}

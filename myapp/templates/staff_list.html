@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'index' %}">
+    <img src="{% url 'image' image_name='logo_white.png' %}" alt="Logo" style="position: relative; right: 40px; width: 200px; height: 140px;">
+</a>
+<h1 style="color: white; display: flex; justify-content: center; font-size: 70px;">Base NINGENs</h1>
+<form style="display: flex; justify-content: center;" method="get" action="{% url 'staff_list' %}">
+    <input class="button" style="cursor:auto; width: 400px; " type="text" name="q" class="search-input" placeholder="ID BeSIDe ou Nom..." value="{{ query }}">
+</form>
+
+
+<div >
+    <form method="get" action="{% url 'staff_list' %}">
+        <select class="button"  name="activite_filter" id="activite_filter" class="filter-select">
+            <option value=""{% if not activite_filter %}selected{% endif %}>All</option>
+            <option value="Jumia TN">Jumia TN</option>
+            <option value="Jumia DZ">Jumia DZ</option>
+            <option value="Kool">Kool</option>
+            <option value="Arkan">Arkan</option>
+            {% for activite_option in activite_options %}
+                <option value="{{ activite_option }}">{{ activite_option }}</option>
+            {% endfor %}
+        </select>
+        <select class="button" style="margin: 0;" name="micro_activite_filter" id="micro_activite_filter" class="filter-select">
+            <option value=""{% if not activite_filter %}selected{% endif %}>All</option>
+            <option value="CS">CS</option>
+            <option value="Confirmation">Confirmation</option>
+            <option value="ODS">ODS</option>
+            <option value="PG">PG</option>
+            {% for micro_activite_option in micro_activite_options %}
+                <option value="{{ micro_activite_option }}">{{ micro_activite_option }}</option>
+            {% endfor %}
+        </select>
+        <button class="button"  type="submit" class="filter-button">Apply Filter</button>
+    </form>
+</div>
+
+
+<div style="border-radius: 1em;background-color: rgba(255, 255, 255, 0.1);border: 3px solid rgba(255, 255, 255, 0.5); margin: 20px;">
+    <form method="post" action="{% url 'download_selected_staff' %}" id="downloadForm">
+        {% csrf_token %}
+        <button type="submit" class="button">Download Selected</button>
+        <a class="button" href="{% url 'addStaff' %}">Add</a>
+
+        <li style="list-style-type: none;margin-left: 25px;margin-top: 10px;">
+            <input type="checkbox" id="select-all"> <label class="names" for="select-all"> Select All </label>
+        </li><br>
+        <ul class="checkbox-list">
+            {% for staff_member in staff_members %}
+                <li>
+                    <input type="checkbox" name="selected_staff[]" value="{{ staff_member.ID_Beside }}">
+                    <a class="names" href="{% url 'agent_detail' id_beside=staff_member.ID_Beside %}">{{ staff_member.ID_Beside }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </form>
+</div>
+
+<script>
+    document.getElementById('select-all').addEventListener('change', function () {
+        var checkboxes = document.querySelectorAll('input[name="selected_staff[]"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = document.getElementById('select-all').checked;
+        });
+    });
+</script>
+
+<style>
+    form {
+        margin-bottom: 20px;
+    }
+
+    .names {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+    }
+
+    .names:hover {
+        text-decoration: none;
+        color: rgb(215, 183, 143);
+    }
+    
+    .button, .button:hover{
+        text-decoration: none;
+        font-weight: 600;
+        text-decoration: none;
+        background-color: white;
+        color: black;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 20px;
+        margin: 10px;
+        cursor: pointer;
+    }
+   
+    .checkbox-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .checkbox-list li {
+        width:calc(22%); 
+        margin-left: 25px;
+    }
+</style>
+{% endblock %}

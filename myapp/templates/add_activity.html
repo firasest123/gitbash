@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% include 'navigation.html' %}
+
+  <h1 style="color:white;display: flex;justify-content: center;">Ajouter Compétence</h1>
+
+  <form method="post" style="color:white;display: grid;flex-wrap: wrap;flex-direction: column;justify-content: center;align-items: center;" action="{% url 'add_activity' %}?agent={{ agent }}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+
+{% endblock %}

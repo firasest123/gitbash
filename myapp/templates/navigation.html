@@ -1,0 +1,370 @@
+{% load static %}
+<nav class="navbar-expand-lg">
+    <a href="{% url 'index' %}">
+        <img src="{% url 'image' image_name='logo_white.png' %}" alt="Logo" style="position: relative; right: 40px; width: 200px; height: 140px;">
+    </a>
+    <div class="collapse navbar-collapse justify-content-end " id="navbarColor01" style="margin-right:70px;">
+        <ul class="collapse navbar-collapse justify-content-end" style="position:absolute;top:35px; list-style-type: none;">
+            <!--<li class="nav-item">
+                <a href="{% url 'horaire_preference' %}" class="btn btn-primary nav-link action-button">Sondage</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'winback_rappel_list' %}" class="btn btn-primary action-button logout-button">WinBack Rappel</a>
+            </li>
+            <li>
+                <a href="{% url 'agent_gsm_list' %}" class="btn btn-primary action-button logout-button">WinBack ODS</a>
+            </li>-->
+            <li>
+                {% if user.is_authenticated and user.is_superuser or user.access_choice == "manager" or user.access_choice == "cl" %}
+                <li class="nav-item">
+                    <a href="{% url 'staff_list' %}" class="btn btn-primary nav-link action-button">Base NINGENs</a>
+                </li>
+                <button class="btn-primary dropbtn action-button">Download</button>
+                    <div class="dropdown-content" id="Dropdown">
+                        <div class="download-logout-container">
+                        {% if user.is_authenticated and user.is_superuser %}
+                        <form class="download-form" method="get" action="{% url 'download_interactions' %}">
+                            <div class="date-form">
+                                <input class="date " type="date" name="start_date" required>
+                                <input class=" date " type="date" name="end_date" required>
+                            </div>
+                            <button class="download-button" type="submit">Interactions</button>
+                        </form>
+                        <form class="download-form" method="get" action="{% url 'download_copied_macros' %}">
+                            <div class="date-form">
+                                <input class=" date " type="date" id="start_date2" name="start_date" required>
+                                <input class=" date " type="date" id="end_date2" name="end_date" required>
+                            </div>
+                            <button class="download-button " type="submit">Copied Macros</button>
+                        </form>
+                    {% endif %}
+                        <form class="download-form" method="get" action="{% url 'download_user_login_logout' %}">
+                            <div class="date-form">
+                                <input class="  date " type="date" name="start_date" required>
+                                <input class=" date " type="date" name="end_date" required>
+                            </div>
+                            <button class="download-button" type="submit">Login/Logout</button>
+                        </form>
+                        <form class="download-form" method="get" action="{% url 'download_status_excel' %}">
+                            <div class="date-form">
+                                <input class="date" type="date" name="start_date" required format="YYYY-MM-DD">
+                                <input class="date" type="date" name="end_date" required format="YYYY-MM-DD">
+                            </div>
+                            <button class="download-button" type="submit">Status</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            </li>
+
+            <li>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle action-button" type="button" id="statusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Status</button>
+                    <div class="dropdown-menu" aria-labelledby="statusDropdown">
+                        <a class="dropdown-item" href="{% url 'change_status' 'ready' %}" data-status="ready">Ready</a>
+                        <a class="dropdown-item" href="{% url 'change_status' 'inbound' %}" data-status="inbound">Inbound</a>
+                        <a class="dropdown-item" href="{% url 'change_status' 'after_call' %}" data-status="after_call">After Call</a>
+                        <a class="dropdown-item" href="{% url 'change_status' 'backoffice' %}" data-status="backoffice">Backoffice</a>
+                        <a class="dropdown-item" href="{% url 'change_status' 'coffee_break' %}" data-status="coffee_break">Coffee Break</a>
+                        <a class="dropdown-item" href="{% url 'change_status' 'lunch' %}" data-status="lunch">Lunch</a>
+                        <a class="dropdown-item" href="{% url 'change_status' 'outbound' %}" data-status="outbound">Outbound</a>
+                        <a class="dropdown-item" href="{% url 'change_status' 'coaching' %}" data-status="coaching">Coaching</a>
+                        <a class="dropdown-item" href="{% url 'change_status' 'technical_issue' %}" data-status="technical_issue">Technical Issue</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="profile-profil-menu">
+                    <img src="{{ request.user.image.url }}" alt="Profile Image" id="profile-image">
+                    <ul class="dropdown-profil-menu" id="dropdown-menu">
+                        <div class="user-info">
+                            <img src="{{ request.user.image.url }}" style="width: 40px; height: 40px;border-radius: 50%;" alt="Profile Image">
+                          <span class="user-name" >{{ request.user.name }}</span>
+                        </div>
+                        <hr class="separator">
+                        <li><a href="#">My Profile</a></li>
+                        <li><a href="{% url 'WorkHour' %}">My Planning</a></li>
+                        <li><a href="{% url 'jumia_ods_tn' %}">Ningen Assist</a></li>
+                        <li><a href="{% url 'user_logout' %}">Logout</a></li>
+
+                    </ul>
+                </div>
+</nav>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Charm&display=swap');
+
+.profile-profil-menu{
+       display: flex;
+       justify-content: flex-end;
+       align-items: center;
+       position: absolute;
+       top: 30px;
+       right: 20px;
+       z-index: 9999;
+}
+      .user-info {
+    margin-left: 10px;
+    margin-top:10px;
+  }
+    #profile-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .dropdown-profil-menu {
+    display: none;
+    position: absolute;
+    top: 120%;
+    right: 0px;
+    background-color: #fff;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    z-index: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 10px;
+}
+
+
+.dropdown-profil-menu li {
+    white-space: nowrap;
+    padding-inline: 50px;
+    padding-block: 7px;
+    text-decoration: none;
+}
+
+.dropdown-profil-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.action-button {
+        font-weight: 600;
+        text-decoration: none;
+        background-color: white;
+        color: black;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        margin-right: 10px;
+        cursor: pointer;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.status-button.active-status {
+    color: green;
+}
+
+.status-button {
+background-color: white;
+color: black;
+padding: 10px;
+font-size: 15px;
+border: none;
+cursor: pointer;
+border-radius: 20px;
+font-weight: 600;
+}
+
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    z-index: 1;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+    color: black;
+    border-radius: 20px;
+}
+
+.dropdown-item.active {
+    background-color: green;
+    color: white;
+}
+
+.date{
+        text-decoration: none;
+        background-color: white;
+        color: black;
+        border-color: grey;
+        border-radius: 10px;
+        cursor: pointer;
+}
+
+.dropbtn {
+    background-color: white;
+    color: black;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    font-weight: 600;
+    padding: 12px 20px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    z-index: 1;
+    top:105%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+}
+
+.download-logout-container {
+        align-items: center;
+        margin-top: 10px;
+        display: block;
+    }
+
+.button-group {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+}
+
+.download-button {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+
+}
+
+.download-form {
+    display: block;
+    margin-bottom: 10px;
+}
+
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const profileMenu = document.querySelector(".profile-profil-menu");
+        const dropdownMenu = document.querySelector(".dropdown-profil-menu");
+
+        profileMenu.addEventListener("click", function (e) {
+            e.stopPropagation(); // Prevent the document click event from closing the menu
+            dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+        });
+
+        // Close the dropdown when clicking outside of it
+        document.addEventListener("click", function (e) {
+            if (!profileMenu.contains(e.target)) {
+                dropdownMenu.style.display = "none";
+            }
+        });
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+    // Check if there's a stored active status in local storage
+    const activeStatus = localStorage.getItem('activeStatus');
+
+    if (activeStatus) {
+        // Remove the 'active' class from all items
+        dropdownItems.forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // Add the 'active' class to the item matching the stored active status
+        const activeItem = document.querySelector(`.dropdown-item[data-status="${activeStatus}"]`);
+
+        if (activeItem) {
+            activeItem.classList.add('active');
+        }
+    }
+
+    // Add click event listeners to the dropdown items
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function () {
+            // Remove 'active' class from all items
+            dropdownItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add 'active' class to the clicked item
+            this.classList.add('active');
+
+            // Store the active status in local storage
+            localStorage.setItem('activeStatus', this.getAttribute('data-status'));
+        });
+    });
+
+
+    // Add event listener for logout button
+    const logoutButton = document.querySelector('.logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function () {
+            // Remove the 'active' class when the user logs out
+            dropdownItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Clear the active status from local storage
+            localStorage.removeItem('activeStatus');
+        });
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const downloadButton = document.querySelector('.dropbtn');
+    const downloadDropdown = document.querySelector('.dropdown-content');
+
+    // Hide the download dropdown by default
+    downloadDropdown.style.display = 'none';
+
+    downloadButton.addEventListener('click', function (e) {
+        e.stopPropagation(); // Prevent click event from propagating to document
+
+        if (downloadDropdown.style.display === 'block') {
+            downloadDropdown.style.display = 'none';
+        } else {
+            downloadDropdown.style.display = 'block';
+        }
+    });
+
+    // Close the dropdown if the user clicks outside
+    document.addEventListener('click', function (event) {
+        if (!downloadButton.contains(event.target) && !downloadDropdown.contains(event.target)) {
+            downloadDropdown.style.display = 'none';
+        }
+    });
+});
+</script>

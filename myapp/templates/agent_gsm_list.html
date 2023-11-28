@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% include 'navigation.html' %}
+  <div class="text-center">
+    <ul class="gsm-list">
+      {% for gsm in gsm_list %}
+        <li><a href="{% url 'gsm_detail' gsm_id=gsm.GSM %}">{{ gsm.GSM }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <style>
+    .gsm-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      columns: 5;
+      -webkit-columns: 5;
+    }
+
+    .gsm-list li {
+      display: inline-block;
+      width: 100%;
+      padding: 5px;
+    }
+
+    .gsm-list a {
+      text-decoration: none;
+      color: white;
+      display: block;
+    }
+
+  
+  </style>
+  <script>
+    // Get all the 'a' elements inside the 'gsm-list' and check if they have been visited
+    var links = document.querySelectorAll('.gsm-list a');
+    links.forEach(function (link) {
+      if (link.href === window.location.href) {
+        // If the link's href matches the current URL, it's visited, so add the 'visited' class
+        link.classList.add('visited');
+      }
+    });
+  </script>
+{% endblock %}
